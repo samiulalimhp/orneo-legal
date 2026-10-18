@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TikTok Authorization - Orneo World Automation</title>
+<style>
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;max-width:720px;margin:40px auto;padding:0 20px;line-height:1.6;color:#1a1a1a}
+  h1{color:#065f46}
+  code,textarea{font-family:ui-monospace,Consolas,monospace}
+  textarea{width:100%;height:110px;padding:10px;border:1px solid #bbb;border-radius:8px;font-size:14px}
+  button{margin-top:8px;padding:10px 18px;border:0;border-radius:8px;background:#065f46;color:#fff;font-size:15px;cursor:pointer}
+  .err{color:#b00020}
+  .note{color:#555;font-size:14px}
+</style>
+</head>
+<body>
+<h1>TikTok Authorization</h1>
+<div id="out"></div>
+<p class="note">This page only displays the authorization code from the address bar. Nothing is sent or stored anywhere. Orneo World Automation is a personal tool used by its owner.</p>
+<script>
+  var p = new URLSearchParams(window.location.search);
+  var out = document.getElementById('out');
+  var code = p.get('code');
+  var error = p.get('error');
+  if (code) {
+    out.innerHTML = '<p>Authorization successful. Copy this code and paste it into your n8n workflow (valid for a short time, use it once):</p>' +
+      '<textarea id="c" readonly></textarea><br><button onclick="copyCode()">Copy code</button>' +
+      '<p class="note">Granted scopes: ' + (p.get('scopes') || 'n/a') + '</p>';
+    document.getElementById('c').value = code;
+  } else if (error) {
+    out.innerHTML = '<p class="err">Authorization failed: ' + (p.get('error_description') || error) + '</p>';
+  } else {
+    out.innerHTML = '<p>No authorization code found. Start the login from TikTok.</p>';
+  }
+  function copyCode(){
+    var c = document.getElementById('c'); c.select();
+    document.execCommand('copy');
+  }
+</script>
+</body>
+</html>
